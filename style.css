@@ -25,3 +25,11 @@ The designs were created to the following widths:
 
 */
 
+* {
+  box-sizing: border-box;
+  font-family: Rubik, sans-serif;
+}
+
+body {
+  margin: 0;
+}
