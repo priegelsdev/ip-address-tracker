@@ -48,11 +48,22 @@ async function fetchGeo(ip) {
     const data = await res.json()
     console.log(data)
 
-    let map = L.map('map').setView([data.location.lat, data.location.lng], 16);
+    // creating map
+
+    let map = L.map('map').setView([data.location.lat, data.location.lng], 17);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
+
+    // adding custom marker
+
+    let customMarker = L.icon({
+      iconUrl: './img/icon-location.svg',
+      iconSize: [38, 50]
+    })
+
+    L.marker([data.location.lat, data.location.lng], {icon: customMarker}).addTo(map)
 
     ipEl.innerText = data.ip
     ipEl.style.color = '#2b2b2b'
