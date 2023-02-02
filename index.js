@@ -12,6 +12,17 @@
 - [How to use Mapbox securely](https://docs.mapbox.com/help/troubleshooting/how-to-use-mapbox-securely/)
 */ 
 
+const input = document.querySelector('.search-input')
+const button = document.querySelector('.search-btn')
+
+// event listener for search button
+button.addEventListener('click', function(e) {
+  e.preventDefault();
+  map.remove();
+  document.querySelector('main').appendChild(document.createElement('div')).setAttribute("id", "map")
+  fetchDetails()
+})
+
 // initial function block to get user IP address and get coordinates for that IP; 
 // can be changed later on once user makes request 
 
@@ -28,19 +39,29 @@ async function getIpAddress() {
 // API call to get coordinates to be displayed by leaflet map
 
 async function fetchGeo(ip) {
-  const res = await fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=at_I6W8LXRSmni2Er5pShOMcWjbRW4dI&ipAddress=${ip}`)
-  const data = await res.json()
-  console.log({lat: data.location.lat, lng: data.location.lng})
+  try {
+    const res = await fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=at_I6W8LXRSmni2Er5pShOMcWjbRW4dI&ipAddress=${ip}`)
+    const data = await res.json()
+    console.log({lat: data.location.lat, lng: data.location.lng})
 
-  let map = L.map('map').setView([data.location.lat, data.location.lng], 16);
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  }).addTo(map);
+    let map = L.map('map').setView([data.location.lat, data.location.lng], 16);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+  } catch (error) {
+    document.querySelector('.ip-result').innerHTML = "NOT A VALID IP!"
+    document.querySelector('.ip-result').style.color = 'red' 
+  }
 }
 
 async function fetchDetails() {
-  const ip = await getIpAddress();
+  let ip;
+  if (input.value != "") {
+    ip = input.value
+  } else {
+    ip = await getIpAddress();
+  }
   fetchGeo(ip)
 }
 
