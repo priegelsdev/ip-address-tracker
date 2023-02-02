@@ -14,6 +14,10 @@
 
 const input = document.querySelector('.search-input')
 const button = document.querySelector('.search-btn')
+const ipEl = document.querySelector('.ip-result')
+const locationEl = document.querySelector('.location-result')
+const timeEl = document.querySelector('.timezone-result')
+const ispEl = document.querySelector('.isp-result')
 
 // event listener for search button
 button.addEventListener('click', function(e) {
@@ -42,16 +46,23 @@ async function fetchGeo(ip) {
   try {
     const res = await fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=at_I6W8LXRSmni2Er5pShOMcWjbRW4dI&ipAddress=${ip}`)
     const data = await res.json()
-    console.log({lat: data.location.lat, lng: data.location.lng})
+    console.log(data)
 
     let map = L.map('map').setView([data.location.lat, data.location.lng], 16);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
+
+    ipEl.innerText = data.ip
+    ipEl.style.color = '#2b2b2b'
+    locationEl.innerText = data.location.city + ', ' + data.location.country
+    timeEl.innerText = 'UTC ' + data.location.timezone 
+    ispEl.innerText = data.isp
+
   } catch (error) {
-    document.querySelector('.ip-result').innerHTML = "NOT A VALID IP!"
-    document.querySelector('.ip-result').style.color = 'red' 
+    ipEl.innerHTML = "NOT A VALID IP!"
+    ipEl.style.color = 'red' 
   }
 }
 
