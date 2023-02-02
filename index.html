@@ -12,15 +12,32 @@
 </head>
 <body>
 
-  IP Address Tracker
+  <main>
 
-  Search for any IP address or domain
+    <header>
 
-  IP Address
-  Location
-  Timezone
-  UTC <!-- add offset value dynamically using the API -->
-  ISP
-  
+      <h1>IP Address Tracker</h1>
+      <form> <!-- Input for IP Address -->
+        <input type="text" class="search-input" placeholder="Search for any IP address or domain" name="search">
+        <button type="submit" class="search-btn">></button>
+      </form>
+
+    </header>
+    <div class="details-container">
+      <h6 class="ip">IP Address</h6>
+      <h4 class="ip-result"></h4>
+      <h6 class="location">Location</h6>
+      <h4 class="location-result"></h4>
+      <h6 class="timezone">Timezone</h6>
+      <h4 class="timezone-result">  UTC <!-- add offset value dynamically using the API --></h4>
+      <h6 class="isp">ISP</h6>
+      <h4 class="isp-result"></h4>
+    </div>
+
+    <div class="map">
+      
+    </div>
+  </main>
+
 </body>
 </html>
